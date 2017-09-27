@@ -234,16 +234,16 @@ class PuckWorld(PyGameWrapper):
         self._handle_player_events()
         self.player.update(self.dx, self.dy, dt)
 
-        dx = self.player.pos.x - self.good_creep.pos.x
-        dy = self.player.pos.y - self.good_creep.pos.y
+        dx = (self.player.pos.x - self.good_creep.pos.x)/self.width
+        dy = (self.player.pos.y - self.good_creep.pos.y)/self.height
         dist_to_good = math.sqrt(dx * dx + dy * dy)
 
-        dx = self.player.pos.x - self.bad_creep.pos.x
-        dy = self.player.pos.y - self.bad_creep.pos.y
+        dx = (self.player.pos.x - self.bad_creep.pos.x)/self.width
+        dy = (self.player.pos.y - self.bad_creep.pos.y)/self.height
         dist_to_bad = math.sqrt(dx * dx + dy * dy)
 
         reward = -dist_to_good
-        if dist_to_bad < self.CREEP_BAD['radius_outer']:
+        if dist_to_bad < self.CREEP_BAD['radius_outer']/self.width:
             reward += 2.0 * \
                 (dist_to_bad - self.CREEP_BAD['radius_outer']
                  ) / float(self.CREEP_BAD['radius_outer'])
